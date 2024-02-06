@@ -2,6 +2,7 @@ package chess;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Objects;
 
 /**
  * Represents a single chess piece
@@ -10,6 +11,18 @@ import java.util.HashSet;
  * signature of the existing methods.
  */
 public class ChessPiece {
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ChessPiece that)) return false;
+        return t == that.t && color == that.color;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(t, color);
+    }
+
     PieceType t;
     ChessGame.TeamColor color;
 
@@ -71,6 +84,34 @@ public class ChessPiece {
                 }
 
             }
+        }
+        else if (t == PieceType.QUEEN) {
+            int[][] directions = {{1, 1}, {1, -1}, {-1, 1}, {-1, -1}, {1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+            for(int[] d : directions){
+                tempPos = new ChessPosition(myPosition.getRow()+d[0], myPosition.getColumn()+d[1]);
+
+                while(tempPos.validPos() && board.getPiece(tempPos) == null ){
+                    moves.add(new ChessMove(myPosition, tempPos, null));
+                    tempPos = new ChessPosition(tempPos.getRow()+d[0], tempPos.getColumn()+d[1]);
+                }
+
+                if(tempPos.validPos() && board.getPiece(tempPos).getTeamColor() != color){
+                    moves.add(new ChessMove(myPosition, tempPos, null));
+                }
+
+            }
+        }
+        else if (t == PieceType.KING) {
+
+        }
+        else if (t == PieceType.ROOK) {
+
+        }
+        else if (t == PieceType.KNIGHT) {
+
+        }
+        else if (t == PieceType.PAWN) {
+
         }
         return moves;
     }
