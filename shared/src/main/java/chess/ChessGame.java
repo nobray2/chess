@@ -1,5 +1,6 @@
 package chess;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 
@@ -53,7 +54,34 @@ public class ChessGame {
      * startPosition
      */
     public Collection<ChessMove> validMoves(ChessPosition startPosition) {
-        throw new RuntimeException("Not implemented");
+        TeamColor  color = b.getPiece(startPosition).getTeamColor();
+        HashSet<ChessMove> valids = (HashSet<ChessMove>) b.getPiece(startPosition).pieceMoves(b, startPosition);
+        ArrayList<ChessMove> toRemove = new ArrayList<>();
+
+        ChessPiece originalPiece = b.getPiece(startPosition);
+
+        for(ChessMove m : valids){
+            ChessPiece replacedPiece = b.getPiece(m.getEndPosition());
+            b.removePiece(m.getStartPosition());
+            b.removePiece(m.getEndPosition());
+
+            b.addPiece(m.getEndPosition(), originalPiece);
+
+
+            if(isInCheck(color)){
+                toRemove.add(m);
+                System.out.println(m);
+            }
+
+            b.removePiece(m.getEndPosition());
+            b.removePiece(m.getStartPosition());
+
+            b.addPiece(m.getStartPosition(), originalPiece);
+            b.addPiece(m.getEndPosition(), replacedPiece);
+
+        }
+        toRemove.forEach(valids::remove);
+        return valids;
     }
 
     /**
