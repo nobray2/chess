@@ -228,9 +228,16 @@ public class ChessGame {
      * @return True if the specified team is in stalemate, otherwise false
      */
     public boolean isInStalemate(TeamColor teamColor) {
-        return false;
-
-
+        HashSet<ChessMove> moves = new HashSet<>();
+        for(int i = 1; i < 9; ++i){
+            for(int j = 1; j < 9; j++){
+                ChessPosition tempPos = new ChessPosition(i,j);
+                if(b.getPiece(tempPos) != null && b.getPiece(tempPos).getTeamColor() == teamColor){
+                    moves.addAll(validMoves(tempPos));
+                }
+            }
+        }
+        return moves.isEmpty();
     }
 
     /**
