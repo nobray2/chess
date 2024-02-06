@@ -115,6 +115,21 @@ public class ChessPiece {
 
         }
         else if (t == PieceType.ROOK) {
+            int[][] directions = {{1,0},{-1,0},{0,1},{0,-1}};
+
+            for(int[] d : directions){
+                tempPos = new ChessPosition(myPosition.getRow()+d[0], myPosition.getColumn()+d[1]);
+
+                while(tempPos.validPos() && board.getPiece(tempPos) == null ){
+                    moves.add(new ChessMove(myPosition, tempPos, null));
+                    tempPos = new ChessPosition(tempPos.getRow()+d[0], tempPos.getColumn()+d[1]);
+                }
+
+                if(tempPos.validPos() && board.getPiece(tempPos).getTeamColor() != color){
+                    moves.add(new ChessMove(myPosition, tempPos, null));
+                }
+
+            }
 
         }
         else if (t == PieceType.KNIGHT) {
