@@ -102,6 +102,16 @@ public class ChessPiece {
             }
         }
         else if (t == PieceType.KING) {
+            int[][] directions = {{1,1},{0,1},{-1,1},{-1,0},{-1,-1},{0,-1},{1,-1},{1,0}};
+            for(int[] d : directions){
+                tempPos = new ChessPosition(myPosition.getRow()+d[0], myPosition.getColumn()+d[1]);
+                if(tempPos.getColumn()<=8 && tempPos.getColumn() >= 1 && tempPos.getRow()<=8 && tempPos.getRow()>=1){
+                    if(board.getPiece(tempPos) == null || board.getPiece(tempPos).getTeamColor() != color){
+                        moves.add(new ChessMove(myPosition, tempPos, null));
+                    }
+                }
+
+            }
 
         }
         else if (t == PieceType.ROOK) {
