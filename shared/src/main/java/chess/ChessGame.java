@@ -91,7 +91,68 @@ public class ChessGame {
      * @throws InvalidMoveException if move is invalid
      */
     public void makeMove(ChessMove move) throws InvalidMoveException {
-        throw new RuntimeException("Not implemented");
+        ChessPosition oldPosition = new ChessPosition(move.getStartPosition().getRow(),move.getStartPosition().getColumn());
+        ChessPiece oldPiece = (ChessPiece) b.getPiece(move.getEndPosition());
+
+        if(b.getPiece(move.getStartPosition()) == null){
+            throw new InvalidMoveException("null piece");
+        }
+
+        if(b.getPiece(move.getStartPosition()).getTeamColor() != colorTurn){
+            throw new InvalidMoveException("wrong color piece for this players turn");
+        }
+        HashSet<ChessMove> moves = new HashSet<>();
+        moves = (HashSet<ChessMove>) validMoves(move.getStartPosition());
+
+
+
+        if(!moves.contains(move)){
+            throw new InvalidMoveException("invalid move for that piece");
+        }
+
+        //promotion stuff
+        if(move.getEndPosition().getRow() == 8 || move.getEndPosition().getRow() == 1) {
+            if(move.getPromotionPiece() != null) {
+                switch (move.getPromotionPiece()){
+                    case ROOK -> {
+                        b.addPiece(move.getEndPosition(), new ChessPiece(b.getPiece(move.getStartPosition()).getTeamColor(), ChessPiece.PieceType.ROOK));
+                    }
+                    case QUEEN -> {
+                        b.addPiece(move.getEndPosition(), new ChessPiece(b.getPiece(move.getStartPosition()).getTeamColor(), ChessPiece.PieceType.QUEEN));
+                    }
+                    case KNIGHT -> {
+                        b.addPiece(move.getEndPosition(), new ChessPiece(b.getPiece(move.getStartPosition()).getTeamColor(), ChessPiece.PieceType.KNIGHT));
+                    }
+                    case BISHOP -> {
+                        b.addPiece(move.getEndPosition(), new ChessPiece(b.getPiece(move.getStartPosition()).getTeamColor(), ChessPiece.PieceType.BISHOP));
+                    }
+                }
+                b.removePiece(move.getStartPosition());
+            }
+
+        }
+        if(move.getPromotionPiece() == null){
+            b.addPiece(move.getEndPosition(),  b.getPiece(move.getStartPosition()));
+            b.removePiece(move.getStartPosition());
+        }
+
+
+        if(isInCheck(colorTurn)){
+            b.addPiece(move.getStartPosition(), b.getPiece(move.getEndPosition()));
+            b.addPiece(move.getEndPosition(), oldPiece);
+            throw new InvalidMoveException("");
+        }
+
+
+
+
+
+        if(colorTurn == TeamColor.WHITE){
+            colorTurn = TeamColor.BLACK;
+        }
+        else{
+            colorTurn = TeamColor.WHITE;
+        };
     }
 
     /**
