@@ -1,5 +1,6 @@
 package chess;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Objects;
@@ -145,6 +146,86 @@ public class ChessPiece {
             }
         }
         else if (t == PieceType.PAWN) {
+            ArrayList<ChessMove> toAdd = new ArrayList<>();
+            ArrayList<ChessMove> toRemove = new ArrayList<>();
+
+
+            if(color == ChessGame.TeamColor.WHITE){
+                if(myPosition.getRow() == 2){
+                    tempPos = new ChessPosition(myPosition.getRow()+2, myPosition.getColumn());
+                    if(board.getPiece(tempPos) == null){
+                        if(board.getPiece(new ChessPosition(myPosition.getRow()+1, myPosition.getColumn()))==null){
+                            moves.add(new ChessMove(myPosition, tempPos, null));
+                        }
+                    }
+                }
+                tempPos = new ChessPosition(myPosition.getRow()+1, myPosition.getColumn());
+                if(board.getPiece(tempPos)==null){
+                    moves.add(new ChessMove(myPosition, tempPos, null));
+                }
+
+                //capturing
+                int[][] whiteTakes = {{1,-1},{1,1}};
+                for(int[] t : whiteTakes){
+                    tempPos = new ChessPosition(myPosition.getRow()+t[0], myPosition.getColumn()+t[1]);
+                    if(tempPos.validPos() && board.getPiece(tempPos) != null && board.getPiece(tempPos).getTeamColor() == ChessGame.TeamColor.BLACK){
+                        moves.add(new ChessMove(myPosition, tempPos, null));
+                    }
+                }
+                //promotion
+                if(myPosition.getRow() == 7){
+                    for(ChessMove m : moves){
+                        for(PieceType p : PieceType.values()){
+                            if(p != PieceType.PAWN && p != PieceType.KING) {
+                                toAdd.add(new ChessMove(m.getStartPosition(), m.getEndPosition(), p));
+                            }
+                        }
+                        if(m.getPromotionPiece() == null){
+                            toRemove.add(m);
+                        }
+                    }
+                }
+            }
+
+            if(color == ChessGame.TeamColor.BLACK){
+                if(myPosition.getRow() == 7){
+                    tempPos = new ChessPosition(myPosition.getRow()-2, myPosition.getColumn());
+                    if(board.getPiece(tempPos) == null){
+                        if(board.getPiece(new ChessPosition(myPosition.getRow()-1, myPosition.getColumn()))==null){
+                            moves.add(new ChessMove(myPosition, tempPos, null));
+                        }
+                    }
+                }
+                tempPos = new ChessPosition(myPosition.getRow()-1, myPosition.getColumn());
+                if(board.getPiece(tempPos)==null){
+                    moves.add(new ChessMove(myPosition, tempPos, null));
+                }
+
+                //capturing
+                int[][] blackTakes = {{-1,-1},{-1,1}};
+                for(int[] t : blackTakes){
+                    tempPos = new ChessPosition(myPosition.getRow()+t[0], myPosition.getColumn()+t[1]);
+                    if(tempPos.validPos() && board.getPiece(tempPos) != null && board.getPiece(tempPos).getTeamColor() == ChessGame.TeamColor.WHITE){
+                        moves.add(new ChessMove(myPosition, tempPos, null));
+                    }
+                }
+
+                if(myPosition.getRow() == 2){
+                    for(ChessMove m : moves){
+                        for(PieceType p : PieceType.values()){
+                            if(p != PieceType.PAWN && p != PieceType.KING) {
+                                toAdd.add(new ChessMove(m.getStartPosition(), m.getEndPosition(), p));
+                            }
+                        }
+                        if(m.getPromotionPiece() == null){
+                            toRemove.add(m);
+                        }
+                    }
+                }
+            }
+
+            moves.addAll(toAdd);
+            toRemove.forEach(moves::remove);
 
         }
         return moves;
