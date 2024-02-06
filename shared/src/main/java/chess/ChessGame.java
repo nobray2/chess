@@ -70,7 +70,6 @@ public class ChessGame {
 
             if(isInCheck(color)){
                 toRemove.add(m);
-                System.out.println(m);
             }
 
             b.removePiece(m.getEndPosition());
@@ -185,8 +184,6 @@ public class ChessGame {
         }
 
         for(ChessMove m : moves) {
-            System.out.println(m.getEndPosition().toString());
-            System.out.println(kingPos.toString());
             if (m.getEndPosition().equals(kingPos)) {
                 return true;
 
@@ -260,10 +257,7 @@ public class ChessGame {
         return b;
     }
     public static void main(String[] args) {
-        ChessGame g = new ChessGame();
-        g.getBoard().addPiece(new ChessPosition(8,4), new ChessPiece(TeamColor.WHITE, ChessPiece.PieceType.ROOK));
-        // Create a new instance of ChessGame
-        System.out.println(g.isInCheck(TeamColor.BLACK));
+
 
     }
 }
