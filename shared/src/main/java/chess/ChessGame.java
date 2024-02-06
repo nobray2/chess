@@ -107,4 +107,12 @@ public class ChessGame {
     public ChessBoard getBoard() {
         throw new RuntimeException("Not implemented");
     }
+    public static void main(String[] args) {
+        // Create a new instance of ChessGame
+        ChessGame game = new ChessGame();
+        ChessBoard b = new ChessBoard();
+        b.resetBoard();
+        System.out.println(b.toString());
+
+    }
 }
