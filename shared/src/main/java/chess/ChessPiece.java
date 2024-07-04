@@ -1,8 +1,6 @@
 package chess;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * Represents a single chess piece
@@ -131,6 +129,90 @@ public class ChessPiece {
                 }
             }
         }
+        else if(t == PieceType.PAWN){
+            ArrayList<ChessMove> toAdd = new ArrayList<>();
+            ArrayList<ChessMove> toDelete = new ArrayList<>();
+            if(c == ChessGame.TeamColor.BLACK){
+                if(myPosition.getRow()==7){
+                    temp = new ChessPosition(myPosition.getRow()-2, myPosition.getColumn());
+                    if(board.getPiece(temp) == null){
+                        if(board.getPiece(new ChessPosition(myPosition.getRow()-1, myPosition.getColumn())) == null){
+                            m.add(new ChessMove(myPosition, temp, null));
+                        }
+                    }
+                }
+                temp = new ChessPosition(myPosition.getRow()-1, myPosition.getColumn());
+                if(board.getPiece(temp)==null){
+                    m.add(new ChessMove(myPosition, temp, null));
+                }
+                //capture
+                int[][] blackTake = {{-1,-1},{-1,1}};
+                for(int[] t : blackTake){
+                    temp = new ChessPosition(myPosition.getRow()+t[0], myPosition.getColumn()+t[1]);
+                    if(temp.valid() && board.getPiece(temp) != null && board.getPiece(temp).getTeamColor() != ChessGame.TeamColor.BLACK){
+                        m.add(new ChessMove(myPosition, temp, null));
+                    }
+                }
+
+                //promote
+                if(myPosition.getRow()==2){
+                    for(ChessMove c : m){
+                        for(PieceType p : PieceType.values()){
+                            if(p != PieceType.KING && p != PieceType.PAWN){
+                                toAdd.add(new ChessMove(c.getStartPosition(), c.getEndPosition(), p));
+                            }
+                        }
+                        if(c.getPromotionPiece() == null){
+                            toDelete.add(c);
+                        }
+                    }
+                }
+            }
+
+            //white
+
+            if(c == ChessGame.TeamColor.WHITE){
+                if(myPosition.getRow()==2){
+                    temp = new ChessPosition(myPosition.getRow()+2, myPosition.getColumn());
+                    if(board.getPiece(temp) == null){
+                        if(board.getPiece(new ChessPosition(myPosition.getRow()+1, myPosition.getColumn())) == null){
+                            m.add(new ChessMove(myPosition, temp, null));
+                        }
+                    }
+                }
+                temp = new ChessPosition(myPosition.getRow()+1, myPosition.getColumn());
+                if(board.getPiece(temp)==null){
+                    m.add(new ChessMove(myPosition, temp, null));
+                }
+                //capture
+                int[][] blackTake = {{1,1},{1,-1}};
+                for(int[] t : blackTake){
+                    temp = new ChessPosition(myPosition.getRow()+t[0], myPosition.getColumn()+t[1]);
+                    if(temp.valid() && board.getPiece(temp) != null && board.getPiece(temp).getTeamColor() != ChessGame.TeamColor.WHITE){
+                        m.add(new ChessMove(myPosition, temp, null));
+                    }
+                }
+
+                //promote
+                if(myPosition.getRow()==7){
+                    for(ChessMove c : m){
+                        for(PieceType p : PieceType.values()){
+                            if(p != PieceType.KING && p != PieceType.PAWN){
+                                toAdd.add(new ChessMove(c.getStartPosition(), c.getEndPosition(), p));
+                            }
+                        }
+                        if(c.getPromotionPiece() == null){
+                            toDelete.add(c);
+                        }
+                    }
+                }
+            }
+
+            //add/remove
+            m.addAll(toAdd);
+            toDelete.forEach(m::remove);
+
+        }
 
 
 
@@ -140,4 +222,5 @@ public class ChessPiece {
     public String toString(){
         return "t="+t+"c"+c;
     }
+
 }
