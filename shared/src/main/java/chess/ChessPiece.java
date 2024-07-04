@@ -1,6 +1,7 @@
 package chess;
 
 import java.util.Collection;
+import java.util.HashSet;
 
 /**
  * Represents a single chess piece
@@ -51,6 +52,20 @@ public class ChessPiece {
      * @return Collection of valid moves
      */
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
-        throw new RuntimeException("Not implemented");
+        HashSet<ChessMove> m = new HashSet<>();
+        ChessPosition temp = myPosition;
+        if(t == PieceType.ROOK){
+            int[][] directions = {{1,0}, {-1,0},{0,1},{0,-1}};
+            for(int[] d : directions){
+                temp = new ChessPosition(myPosition.getRow()+d[0],myPosition.getColumn()+d[1]);
+                while(board.getPiece(temp)==null) {
+                    m.add(new ChessMove(myPosition, temp, null));
+                    temp = new ChessPosition(temp.getRow()+d[0], temp.getColumn()+d[1]);
+                }
+                if(board.getPiece(temp).getTeamColor()!=c){
+                    m.add(new ChessMove(myPosition, temp, null));
+                }
+            }
+        }
     }
 }
