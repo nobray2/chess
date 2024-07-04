@@ -47,4 +47,11 @@ public class ChessPosition {
     public int hashCode() {
         return Objects.hash(r, c);
     }
+
+    public boolean valid(){
+        if(r>=1 && r <=8 && c>=1 && c <= 8){
+            return true;
+        }
+        return false;
+    }
 }
