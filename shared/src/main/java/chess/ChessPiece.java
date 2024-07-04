@@ -81,6 +81,19 @@ public class ChessPiece {
                 }
             }
         }
+        if(t == PieceType.QUEEN){
+            int[][] directions = {{1,0},{1,1},{-1,-1},{0,-1},{1,-1}, {-1,0},{0,1},{-1,-1}};
+            for(int[] d : directions){
+                temp = new ChessPosition(myPosition.getRow()+d[0],myPosition.getColumn()+d[1]);
+                while(temp.valid() && board.getPiece(temp)==null) {
+                    m.add(new ChessMove(myPosition, temp, null));
+                    temp = new ChessPosition(temp.getRow()+d[0], temp.getColumn()+d[1]);
+                }
+                if(temp.valid() && board.getPiece(temp).getTeamColor()!=c){
+                    m.add(new ChessMove(myPosition, temp, null));
+                }
+            }
+        }
 
 
 
