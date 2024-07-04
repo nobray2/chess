@@ -119,6 +119,18 @@ public class ChessPiece {
                 }
             }
         }
+        else if(t == PieceType.KNIGHT){
+            int[][] directions = {{2,1}, {-2,1},{2,-1},{-2,-1}, {1,2},{1,-2},{-1,2},{-1,-2}};
+            for(int[] d : directions){
+                temp = new ChessPosition(myPosition.getRow()+d[0],myPosition.getColumn()+d[1]);
+                if(temp.valid() && board.getPiece(temp) == null){
+                    m.add(new ChessMove(myPosition, temp, null));
+                }
+                else if(temp.valid() && board.getPiece(temp).getTeamColor()!=c){
+                    m.add(new ChessMove(myPosition, temp, null));
+                }
+            }
+        }
 
 
 
