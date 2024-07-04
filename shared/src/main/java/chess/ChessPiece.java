@@ -58,11 +58,11 @@ public class ChessPiece {
             int[][] directions = {{1,0}, {-1,0},{0,1},{0,-1}};
             for(int[] d : directions){
                 temp = new ChessPosition(myPosition.getRow()+d[0],myPosition.getColumn()+d[1]);
-                while(board.getPiece(temp)==null) {
+                while(temp.valid() && board.getPiece(temp)==null) {
                     m.add(new ChessMove(myPosition, temp, null));
                     temp = new ChessPosition(temp.getRow()+d[0], temp.getColumn()+d[1]);
                 }
-                if(board.getPiece(temp).getTeamColor()!=c){
+                if(temp.valid() && board.getPiece(temp).getTeamColor()!=c){
                     m.add(new ChessMove(myPosition, temp, null));
                 }
             }

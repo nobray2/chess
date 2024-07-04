@@ -73,7 +73,7 @@ public class ChessBoard {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ChessBoard that = (ChessBoard) o;
-        return Arrays.equals(pieces, that.pieces);
+        return Arrays.deepEquals(pieces, that.pieces);
     }
 
     @Override
