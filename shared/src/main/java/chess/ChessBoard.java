@@ -88,10 +88,21 @@ public class ChessBoard {
     }
 
     @Override
+    public String toString() {
+        String r = "";
+        for(ChessPiece[] x : pieces){
+            for (ChessPiece p : x){
+                if(p!=null){
+                    r = r.concat(p.toString());
+                }
+            }
+        }
+        return r;
+    }
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ChessBoard that = (ChessBoard) o;
+        if (!(o instanceof ChessBoard that)) return false;
         return Arrays.deepEquals(pieces, that.pieces);
     }
 

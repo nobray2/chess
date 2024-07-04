@@ -69,6 +69,11 @@ public class ChessPiece {
         }
 
 
+
         return m;
+    }
+    @Override
+    public String toString(){
+        return "t="+t;
     }
 }
