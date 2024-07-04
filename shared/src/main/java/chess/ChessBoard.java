@@ -22,7 +22,7 @@ public class ChessBoard {
      * @param piece    the piece to add
      */
     public void addPiece(ChessPosition position, ChessPiece piece) {
-        pieces[position.getColumn()-1][position.getRow()-1] = piece;
+        pieces[position.getRow()-1][position.getColumn()-1] = piece;
     }
 
 
@@ -34,7 +34,7 @@ public class ChessBoard {
      * position
      */
     public ChessPiece getPiece(ChessPosition position) {
-        return pieces[position.getColumn()-1][position.getRow()-1];
+        return pieces[position.getRow()-1][position.getColumn()-1];
     }
 
     /**
@@ -99,10 +99,12 @@ public class ChessBoard {
         }
         return r;
     }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof ChessBoard that)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
+        ChessBoard that = (ChessBoard) o;
         return Arrays.deepEquals(pieces, that.pieces);
     }
 
