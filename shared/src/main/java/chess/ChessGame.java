@@ -59,10 +59,12 @@ public class ChessGame {
         HashSet<ChessMove> moves = (HashSet<ChessMove>) b.getPiece(startPosition).pieceMoves(b, startPosition);
         HashSet<ChessMove> validMoves = new HashSet<ChessMove>();
 
-        ChessBoard testB = new ChessBoard(b);
+
 
         for(ChessMove m : moves){
+            ChessBoard testB = new ChessBoard(b);
             testB.addPiece(m.getEndPosition(), b.getPiece(startPosition));
+            testB.addPiece(startPosition, null);
             if(!testBoardCheck(c, testB)){
                 validMoves.add(m);
             }
@@ -96,7 +98,7 @@ public class ChessGame {
         for(int i = 1; i < 9; i++){
             for(int j = 1; j < 9; j++){
                 ChessPiece p = b.getPiece(NewPos(i,j));
-                if(p != null && p.getTeamColor() != color && p.getPieceType() == ChessPiece.PieceType.KING){
+                if(p != null && p.getTeamColor() == teamColor && p.getPieceType() == ChessPiece.PieceType.KING){
                     kingPos = NewPos(i,j);
                 }
             }
@@ -104,7 +106,7 @@ public class ChessGame {
         for(int i = 1; i < 9; i++){
             for(int j = 1; j < 9; j++){
                 ChessPiece p = b.getPiece(NewPos(i,j));
-                if(p!=null && p.getTeamColor() != color){
+                if(p!=null && p.getTeamColor() != teamColor){
                     moves.addAll(p.pieceMoves(b,NewPos(i,j)));
                 }
             }
@@ -132,7 +134,7 @@ public class ChessGame {
         for (int i = 1; i < 9; i++) {
             for (int j = 1; j < 9; j++) {
                 ChessPiece p = testBoard.getPiece(NewPos(i, j));
-                if (p != null && p.getTeamColor() != color && p.getPieceType() == ChessPiece.PieceType.KING) {
+                if (p != null && p.getTeamColor() == teamColor && p.getPieceType() == ChessPiece.PieceType.KING) {
                     kingPos = NewPos(i, j);
                 }
             }
@@ -140,7 +142,7 @@ public class ChessGame {
         for (int i = 1; i < 9; i++) {
             for (int j = 1; j < 9; j++) {
                 ChessPiece p = testBoard.getPiece(NewPos(i, j));
-                if (p != null && p.getTeamColor() != color) {
+                if (p != null && p.getTeamColor() != teamColor) {
                     moves.addAll(p.pieceMoves(testBoard, NewPos(i, j)));
                 }
             }
