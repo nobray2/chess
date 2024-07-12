@@ -15,6 +15,15 @@ public class ChessBoard {
         pieces = new ChessPiece[8][8];
     }
 
+    public ChessBoard(ChessBoard b) {
+        pieces = new ChessPiece[8][8];
+        for(int i = 0; i < 8; i++){
+            for(int j = 0; j < 8; j++){
+                pieces[i][j] = b.getPiece(new ChessPosition(i+1,j+1));
+            }
+        }
+    }
+
     /**
      * Adds a chess piece to the chessboard
      *

@@ -57,7 +57,18 @@ public class ChessGame {
     public Collection<ChessMove> validMoves(ChessPosition startPosition) {
         TeamColor c = b.getPiece(startPosition).getTeamColor();
         HashSet<ChessMove> moves = (HashSet<ChessMove>) b.getPiece(startPosition).pieceMoves(b, startPosition);
-        return moves;
+        HashSet<ChessMove> validMoves = new HashSet<ChessMove>();
+
+        ChessBoard testB = new ChessBoard(b);
+
+        for(ChessMove m : moves){
+            testB.addPiece(m.getEndPosition(), b.getPiece(startPosition));
+            if(!testBoardCheck(c, testB)){
+                validMoves.add(m);
+            }
+        }
+
+        return validMoves;
     }
 
     /**
@@ -106,8 +117,40 @@ public class ChessGame {
         }
         return false;
     }
+
+
     public ChessPosition NewPos(int r, int c){
         return new ChessPosition(r, c);
+    }
+
+    public boolean testBoardCheck(TeamColor teamColor, ChessBoard testBoard) {
+
+        ChessPosition kingPos = new ChessPosition(1, 1);
+        ChessPosition piecePos;
+        HashSet<ChessMove> moves = new HashSet<>();
+
+        for (int i = 1; i < 9; i++) {
+            for (int j = 1; j < 9; j++) {
+                ChessPiece p = testBoard.getPiece(NewPos(i, j));
+                if (p != null && p.getTeamColor() != color && p.getPieceType() == ChessPiece.PieceType.KING) {
+                    kingPos = NewPos(i, j);
+                }
+            }
+        }
+        for (int i = 1; i < 9; i++) {
+            for (int j = 1; j < 9; j++) {
+                ChessPiece p = testBoard.getPiece(NewPos(i, j));
+                if (p != null && p.getTeamColor() != color) {
+                    moves.addAll(p.pieceMoves(testBoard, NewPos(i, j)));
+                }
+            }
+        }
+        for(ChessMove m : moves){
+            if(m.getEndPosition().equals(kingPos)){
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
