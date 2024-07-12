@@ -104,7 +104,11 @@ public class ChessBoard {
                 if(p!=null){
                     r = r.concat(p.toString());
                 }
+                else{
+                    r = r.concat("-N-");
+                }
             }
+            r= r.concat("\n");
         }
         return r;
     }

@@ -220,7 +220,12 @@ public class ChessPiece {
     }
     @Override
     public String toString(){
-        return "t="+t+"c"+c;
+        String result;
+        result = " " +t;
+        result = result.substring(0,2);
+        result.concat(c+"");
+        result = result.substring(0,2);
+        return result;
     }
 
 }

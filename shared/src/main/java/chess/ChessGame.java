@@ -98,13 +98,16 @@ public class ChessGame {
         if(!moves.contains(move)){
             throw new InvalidMoveException("invalid move for piece type");
         }
+        b.addPiece(move.getEndPosition(), b.getPiece(move.getStartPosition()));
+        b.addPiece(move.getStartPosition(), null);
+
 
 
         if(color == TeamColor.WHITE){
             color = TeamColor.BLACK;
         }
         else{
-            color = TeamColor.BLACK;
+            color = TeamColor.WHITE;
         }
 
     }
