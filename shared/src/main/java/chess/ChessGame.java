@@ -84,10 +84,12 @@ public class ChessGame {
 
 
 
+
+
         if(b.getPiece(move.getStartPosition()) == null){
             throw new InvalidMoveException("null piece");
         }
-        if(b.getPiece(move.getStartPosition()) == null){
+        if(b.getPiece(move.getStartPosition()).getTeamColor() != color){
             throw new InvalidMoveException("wrong color");
         }
 
@@ -95,6 +97,14 @@ public class ChessGame {
         moves = (HashSet<ChessMove>) validMoves(move.getStartPosition());
         if(!moves.contains(move)){
             throw new InvalidMoveException("invalid move for piece type");
+        }
+
+
+        if(color == TeamColor.WHITE){
+            color = TeamColor.BLACK;
+        }
+        else{
+            color = TeamColor.BLACK;
         }
 
     }
