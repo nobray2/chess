@@ -18,6 +18,7 @@ public class ChessGame {
     public ChessGame() {
         b = new ChessBoard();
         b.resetBoard();
+        color = TeamColor.WHITE;
 
     }
 
@@ -81,11 +82,6 @@ public class ChessGame {
      */
     public void makeMove(ChessMove move) throws InvalidMoveException {
 
-
-
-
-
-
         if(b.getPiece(move.getStartPosition()) == null){
             throw new InvalidMoveException("null piece");
         }
@@ -129,9 +125,6 @@ public class ChessGame {
                     throw new InvalidMoveException("Unexpected promotion piece");
             }
         }
-
-
-
 
         if(color == TeamColor.WHITE){
             color = TeamColor.BLACK;
@@ -221,7 +214,22 @@ public class ChessGame {
      * @return True if the specified team is in checkmate
      */
     public boolean isInCheckmate(TeamColor teamColor) {
-        throw new RuntimeException("Not implemented");
+        HashSet<ChessMove> moves = new HashSet<ChessMove>();
+        ChessPosition kingPos = new ChessPosition(1,1);
+        ChessPiece tempPiece;
+        if(isInCheck(teamColor)){
+            for(int i = 0; i < 8; i++) {
+                for (int j = 0; j < 8; j++) {
+                    tempPiece = b.getPiece(new ChessPosition(i + 1, j + 1));
+                    if (tempPiece != null && tempPiece.getTeamColor() == teamColor) {
+                        moves.addAll(validMoves(new ChessPosition(i + 1, j + 1)));
+                    }
+                }
+            }
+            return moves.isEmpty();
+
+        }
+        return false;
     }
 
     /**
