@@ -98,8 +98,38 @@ public class ChessGame {
         if(!moves.contains(move)){
             throw new InvalidMoveException("invalid move for piece type");
         }
-        b.addPiece(move.getEndPosition(), b.getPiece(move.getStartPosition()));
-        b.addPiece(move.getStartPosition(), null);
+
+        if(move.getPromotionPiece() == null){
+            b.addPiece(move.getEndPosition(), b.getPiece(move.getStartPosition()));
+            b.addPiece(move.getStartPosition(), null);
+        }
+        else{
+            switch (move.getPromotionPiece()) {
+                case KING:
+                    b.addPiece(move.getEndPosition(), new ChessPiece(b.getPiece(move.getStartPosition()).getTeamColor(), ChessPiece.PieceType.KING));
+                    b.addPiece(move.getStartPosition(), null);
+                    break;
+                case QUEEN:
+                    b.addPiece(move.getEndPosition(), new ChessPiece(b.getPiece(move.getStartPosition()).getTeamColor(), ChessPiece.PieceType.QUEEN));
+                    b.addPiece(move.getStartPosition(), null);
+                    break;
+                case ROOK:
+                    b.addPiece(move.getEndPosition(), new ChessPiece(b.getPiece(move.getStartPosition()).getTeamColor(), ChessPiece.PieceType.ROOK));
+                    b.addPiece(move.getStartPosition(), null);
+                    break;
+                case BISHOP:
+                    b.addPiece(move.getEndPosition(), new ChessPiece(b.getPiece(move.getStartPosition()).getTeamColor(), ChessPiece.PieceType.BISHOP));
+                    b.addPiece(move.getStartPosition(), null);
+                    break;
+                case KNIGHT:
+                    b.addPiece(move.getEndPosition(), new ChessPiece(b.getPiece(move.getStartPosition()).getTeamColor(), ChessPiece.PieceType.KNIGHT));
+                    b.addPiece(move.getStartPosition(), null);
+                    break;
+                default:
+                    throw new InvalidMoveException("Unexpected promotion piece");
+            }
+        }
+
 
 
 
